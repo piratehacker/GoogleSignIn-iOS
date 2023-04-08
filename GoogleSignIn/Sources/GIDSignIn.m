@@ -272,7 +272,8 @@ static const NSTimeInterval kMinimumRestoredAccessTokenTimeToExpire = 600.0;
       [[GIDConfiguration alloc] initWithClientID:self.currentUser.authentication.clientID
                                   serverClientID:self.currentUser.serverClientID
                                     hostedDomain:self.currentUser.hostedDomain
-                                     openIDRealm:self.currentUser.openIDRealm];
+                                     openIDRealm:self.currentUser.openIDRealm
+                                           nonce:nil];
   GIDSignInInternalOptions *options =
       [GIDSignInInternalOptions defaultOptionsWithConfiguration:configuration
                                        presentingViewController:presentingViewController
@@ -365,7 +366,8 @@ static const NSTimeInterval kMinimumRestoredAccessTokenTimeToExpire = 600.0;
       [[GIDConfiguration alloc] initWithClientID:self.currentUser.authentication.clientID
                                   serverClientID:self.currentUser.serverClientID
                                     hostedDomain:self.currentUser.hostedDomain
-                                     openIDRealm:self.currentUser.openIDRealm];
+                                     openIDRealm:self.currentUser.openIDRealm
+                                           nonce:nil];
   GIDSignInInternalOptions *options =
       [GIDSignInInternalOptions defaultOptionsWithConfiguration:configuration
                                                presentingWindow:presentingWindow
@@ -589,14 +591,13 @@ static const NSTimeInterval kMinimumRestoredAccessTokenTimeToExpire = 600.0;
   additionalParameters[kSDKVersionLoggingParameter] = GIDVersion();
   additionalParameters[kEnvironmentLoggingParameter] = GIDEnvironment();
 
+  NSString *codeVerifier = [OIDAuthorizationRequest generateCodeVerifier];
+  NSString *codeChallenge = [OIDAuthorizationRequest codeChallengeS256ForVerifier:codeVerifier];
+  NSString *nonce = options.configuration.nonce ? options.configuration.nonce : [OIDAuthorizationRequest generateState];
+
 #if TARGET_OS_IOS || TARGET_OS_MACCATALYST
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:_appAuthConfiguration
-                                                    clientId:options.configuration.clientID
-                                                      scopes:options.scopes
-                                                 redirectURL:redirectURL
-                                                responseType:OIDResponseTypeCode
-                                        additionalParameters:additionalParameters];
+    OIDAuthorizationRequest *request = [[OIDAuthorizationRequest alloc] initWithConfiguration:_appAuthConfiguration clientId:options.configuration.clientID clientSecret:nil scope:options.scopes redirectURL:redirectURL responseType:OIDResponseTypeCode state:[OIDAuthorizationRequest generateState] nonce:nonce codeVerifier:codeVerifier codeChallenge:codeChallenge codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256 additionalParameters:additionalParameters];
+
 
   _currentAuthorizationFlow = [OIDAuthorizationService
       presentAuthorizationRequest:request
@@ -608,14 +609,7 @@ static const NSTimeInterval kMinimumRestoredAccessTokenTimeToExpire = 600.0;
                             emmSupport:emmSupport];
   }];
 #elif TARGET_OS_OSX
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:_appAuthConfiguration
-                                                    clientId:options.configuration.clientID
-                                                clientSecret:@""
-                                                      scopes:options.scopes
-                                                 redirectURL:redirectURL
-                                                responseType:OIDResponseTypeCode
-                                        additionalParameters:additionalParameters];
+    OIDAuthorizationRequest *request = [[OIDAuthorizationRequest alloc] initWithConfiguration:_appAuthConfiguration clientId:options.configuration.clientID clientSecret:nil scope:options.scopes redirectURL:redirectURL responseType:OIDResponseTypeCode state:[OIDAuthorizationRequest generateState] nonce:nonce codeVerifier:codeVerifier codeChallenge:codeChallenge codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256 additionalParameters:additionalParameters];
 
   _currentAuthorizationFlow = [OIDAuthorizationService
       presentAuthorizationRequest:request

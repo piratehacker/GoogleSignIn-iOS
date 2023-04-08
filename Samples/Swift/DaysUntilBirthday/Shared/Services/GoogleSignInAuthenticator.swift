@@ -21,13 +21,13 @@ import GoogleSignIn
 final class GoogleSignInAuthenticator: ObservableObject {
   // TODO: Replace this with your own ID.
   #if os(iOS)
-  private let clientID = "687389107077-8qr6dh8fr4uaja89sdr5ieqb7mep04qv.apps.googleusercontent.com"
+  private let clientID = "742495694338-lcjhc17spu1aq00u9ilaa4etbgkfbtdv.apps.googleusercontent.com"
   #elseif os(macOS)
-  private let clientID = "687389107077-8qr6dh8fr4uaja89sdr5ieqb7mep04qv.apps.googleusercontent.com"
+  private let clientID = "742495694338-lcjhc17spu1aq00u9ilaa4etbgkfbtdv.apps.googleusercontent.com"
   #endif
 
   private lazy var configuration: GIDConfiguration = {
-    return GIDConfiguration(clientID: clientID)
+      return GIDConfiguration(clientID: clientID, serverClientID: "", hostedDomain: "", openIDRealm: "", nonce: "test")
   }()
 
   private var authViewModel: AuthenticationViewModel
