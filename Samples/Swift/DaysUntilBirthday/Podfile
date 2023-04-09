@@ -1,3 +1,6 @@
+source 'https://cdn.cocoapods.org/'
+source 'https://github.com/piratehacker/Specs.git'
+
 pod 'GoogleSignIn', :path => '../../../', :testspecs => ['unit']
 pod 'GoogleSignInSwiftSupport', :path => '../../../', :testspecs => ['unit']
 project 'DaysUntilBirthdayForPod.xcodeproj'
