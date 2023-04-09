@@ -27,7 +27,7 @@ final class GoogleSignInAuthenticator: ObservableObject {
   #endif
 
   private lazy var configuration: GIDConfiguration = {
-      return GIDConfiguration(clientID: clientID, serverClientID: "", hostedDomain: "", openIDRealm: "", nonce: "test")
+      return GIDConfiguration(clientID: clientID, serverClientID: nil, hostedDomain: nil, openIDRealm: nil, nonce: "test")
   }()
 
   private var authViewModel: AuthenticationViewModel
