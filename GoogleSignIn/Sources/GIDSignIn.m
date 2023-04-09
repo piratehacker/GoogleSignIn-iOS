@@ -595,8 +595,10 @@ static const NSTimeInterval kMinimumRestoredAccessTokenTimeToExpire = 600.0;
   NSString *codeChallenge = [OIDAuthorizationRequest codeChallengeS256ForVerifier:codeVerifier];
   NSString *nonce = options.configuration.nonce ? options.configuration.nonce : [OIDAuthorizationRequest generateState];
 
+    NSString *scope = [OIDScopeUtilities scopesWithArray:options.scopes];
+    
 #if TARGET_OS_IOS || TARGET_OS_MACCATALYST
-    OIDAuthorizationRequest *request = [[OIDAuthorizationRequest alloc] initWithConfiguration:_appAuthConfiguration clientId:options.configuration.clientID clientSecret:nil scope:options.scopes redirectURL:redirectURL responseType:OIDResponseTypeCode state:[OIDAuthorizationRequest generateState] nonce:nonce codeVerifier:codeVerifier codeChallenge:codeChallenge codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256 additionalParameters:additionalParameters];
+    OIDAuthorizationRequest *request = [[OIDAuthorizationRequest alloc] initWithConfiguration:_appAuthConfiguration clientId:options.configuration.clientID clientSecret:nil scope:scope redirectURL:redirectURL responseType:OIDResponseTypeCode state:[OIDAuthorizationRequest generateState] nonce:nonce codeVerifier:codeVerifier codeChallenge:codeChallenge codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256 additionalParameters:additionalParameters];
 
 
   _currentAuthorizationFlow = [OIDAuthorizationService
@@ -609,7 +611,7 @@ static const NSTimeInterval kMinimumRestoredAccessTokenTimeToExpire = 600.0;
                             emmSupport:emmSupport];
   }];
 #elif TARGET_OS_OSX
-    OIDAuthorizationRequest *request = [[OIDAuthorizationRequest alloc] initWithConfiguration:_appAuthConfiguration clientId:options.configuration.clientID clientSecret:nil scope:options.scopes redirectURL:redirectURL responseType:OIDResponseTypeCode state:[OIDAuthorizationRequest generateState] nonce:nonce codeVerifier:codeVerifier codeChallenge:codeChallenge codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256 additionalParameters:additionalParameters];
+    OIDAuthorizationRequest *request = [[OIDAuthorizationRequest alloc] initWithConfiguration:_appAuthConfiguration clientId:options.configuration.clientID clientSecret:nil scope:scope redirectURL:redirectURL responseType:OIDResponseTypeCode state:[OIDAuthorizationRequest generateState] nonce:nonce codeVerifier:codeVerifier codeChallenge:codeChallenge codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256 additionalParameters:additionalParameters];
 
   _currentAuthorizationFlow = [OIDAuthorizationService
       presentAuthorizationRequest:request

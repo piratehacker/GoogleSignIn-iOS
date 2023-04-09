@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
     'CoreGraphics',
     'SwiftUI',
   ]
-  s.dependency 'GoogleSignIn', '~> 6.2'
+  s.dependency 'piratehacker_GoogleSignIn', '~> 6.2.5'
   s.test_spec 'unit' do |unit_tests|
     unit_tests.platforms = {
       :ios => ios_deployment_target,

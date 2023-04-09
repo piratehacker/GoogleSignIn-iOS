@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name             = 'piratehacker+GoogleSignIn'
-  s.version          = '6.2.4'
+  s.name             = 'piratehacker_GoogleSignIn'
+  s.version          = '6.2.5'
   s.summary          = 'Enables iOS apps to sign in with Google.'
   s.description      = <<-DESC
 The Google Sign-In SDK allows users to sign in with their Google account from third-party apps.
@@ -10,7 +10,7 @@ The Google Sign-In SDK allows users to sign in with their Google account from th
   s.authors          = 'Google LLC'
   s.source           = {
     :git => 'https://github.com/piratehacker/GoogleSignIn-iOS.git',
-    :tag => 'main'
+    :tag => 'release-6.2.4'
   }
   ios_deployment_target = '10.0'
   osx_deployment_target = '10.15'
